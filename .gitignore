@@ -130,3 +130,4 @@ dmypy.json
 .pyre/
 
 local_settings.py
+get_random_secret_key.py
