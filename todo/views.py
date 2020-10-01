@@ -1,5 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
+from .models import Task
 
 def index(request):
-  return HttpResponse("TODOアプリを開発します〜！")
+  latest_task_list = Task.objects.all()
+  context = {'latest_task_list': latest_task_list}
+  return render(request, 'todo/index.html', context)
