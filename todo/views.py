@@ -19,6 +19,8 @@ def new(request):
     if form.is_valid():
       form.save()
       return HttpResponseRedirect(reverse('index'))
+  else:
+    form = TaskForm()
 
   return render(request, 'todo/index.html',
                            {'latest_task_list': latest_task_list, 'form': form})
