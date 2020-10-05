@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class Task(models.Model):
-  task = models.CharField(max_length=100)
+  task = models.CharField(max_length=100, null=False)
   completed = models.BooleanField(default=False)
   target = models.DateTimeField()
 

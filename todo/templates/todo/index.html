@@ -11,6 +11,20 @@
 {% endblock header %}
 {% block content %}
 <div class='container'> 
+  <div class="alert alert-info">
+    <form action="{% url 'new'  %}" method="post">
+      {% csrf_token %}
+        <div>
+          <label for="new_task">タスク内容</label><br>
+          <input type="text" name="task" id="new_task" value='' placeholder="業務内容">
+        </div>
+        <div>
+          <label for="new_target">期限</label><br>
+          <input type="datetime-local" name="target", id="new_target">
+        </div>
+    <input type="submit" value="add">
+    </form>
+  </div>
 {% for task in latest_task_list %}
 <div class="alert alert-info" role="alert">
   <input type="checkbox" name="completed" value='True' style="float: left; margin: 6px 4px;">
@@ -22,3 +36,4 @@
 {% endfor %}
 </div>
 {% endblock content %}
+
