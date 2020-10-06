@@ -11,27 +11,38 @@
 {% endblock header %}
 {% block content %}
 <div class='container'> 
-  <div class="alert alert-info">
-    <form action="{% url 'new'  %}" method="post">
+  <div class="alert alert-info" style="width: 70%; margin: 20px auto; text-align: center;">
+    <form action="{% url 'new'  %}" method="POST">
       {% csrf_token %}
-        <div>
+      <div class="row">
+        <div class="col">
           <label for="new_task">タスク内容</label><br>
-          <input type="text" name="task" id="new_task" value='' placeholder="業務内容">
+          <input type="text" name="task" class="form-control" id="new_task" value='' placeholder="取り組むタスクを入力">
         </div>
-        <div>
+        <div class="col">
           <label for="new_target">期限</label><br>
-          <input type="datetime-local" name="target", id="new_target">
+          <input type="datetime-local" class="form-control" name="target", id="new_target">
         </div>
-    <input type="submit" value="add">
+      </div>
+    <input type="submit" value="タスクを追加" class="btn btn-primary" style="margin-top: 5px;">
     </form>
   </div>
 {% for task in latest_task_list %}
 <div class="alert alert-info" role="alert">
-  <input type="checkbox" name="completed" value='True' style="float: left; margin: 6px 4px;">
-  <p>{{ task.task }}<span class="badge badge-danger" style="font-size: 15px; margin-left: 5px;">期限：{{ task.target }}</span></P>
-  <a href="#" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">編集</a>
-  <a href="#" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">削除</a>
-  <a href="#" class="btn btn-info" tabindex="-1" role="button" aria-disabled="true">詳細</a>
+  <div style="margin-bottom: 5px;">
+    <input type="checkbox" name="completed" value='True' style="float: left; margin: 6px 4px;">
+    <p id="task_{{ task.id }}" style="display: inline;">{{ task.task }}</p>
+    <p class="badge badge-danger" id="target_{{ task.id }}" style="font-size: 15px; margin-left: 5px; display: inline;">期限：{{ task.target|date:"Y-m-j H:i" }}</p>
+  </div>
+  <form action="{% url 'edit' task.pk %}" method="POST">
+    {% csrf_token %}
+    <div id="form_box_{{task.id}}" class="row"></div>
+  </form>
+  <a type="button" class="btn btn-primary" id="{{task.id}}" onclick="editFunction(this)" style="color: white;">編集</a>
+  <form action="{% url 'delete' task.pk %}" method="POST" class="btn">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success" aria-disabled="true" onclick='return confirm("本当に削除しますか？");'>削除</button>
+  </form>
 </div>
 {% endfor %}
 </div>
