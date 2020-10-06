@@ -10,7 +10,7 @@ def index(request):
   return render(request, 'todo/index.html', context)
 
 def new(request):
-  latest_task_list = Task.objects.all()
+  latest_task_list = Task.objects.order_by('-target').reverse()
   if request.method == 'POST':
     form = TaskForm(data=request.POST)
     # print(form.errors)
@@ -29,15 +29,13 @@ def delete(request, task_id):
   return HttpResponseRedirect(reverse('index'))
 
 def edit(request, task_id):
+  task = get_object_or_404(Task, pk=task_id)
   if request.method == 'POST':
-    task = Task.objects.get(pk=task_id)
-    print(task)
-    print(request.POST)
     task.task=request.POST['task']
     task.target=request.POST['target']
     task.save()
     return HttpResponseRedirect(reverse('index'))
   else:
-    latest_task_list = Task.objects.all()
+    latest_task_list = Task.objects.order_by('-target').reverse()
     context = {'latest_task_list': latest_task_list}
     return render(request, 'todo/index.html', context)
