@@ -30,7 +30,12 @@
   <div class="row">
     <div class="col-md-8 order-md-1">
     {% for task in task_list %}
+    {% if task.target >= utc_time %}
       <div class="alert alert-info" role="alert">
+    {% else %}
+      <div class="alert alert-warning" role="alert">
+        <p style="color: red;"><strong>期限が切れています！！</strong></p>
+    {% endif %}
         <div style="margin-bottom: 5px;">
           <form action="{% url 'completed' task.pk %}" method="POST">
             {% csrf_token %}
