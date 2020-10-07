@@ -4,13 +4,13 @@
 <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#" style="font-size: 30px;">Todoアプリ</a>
+      <a class="navbar-brand" href="#" style="font-size: 30px; margin: auto;">Todoアプリ</a>
     </nav>
   </div>
 </div>
 {% endblock header %}
 {% block content %}
-<div class='container'> 
+<div class='container'>
   <div class="alert alert-info" style="width: 70%; margin: 20px auto; text-align: center;">
     <form action="{% url 'new'  %}" method="POST">
       {% csrf_token %}
@@ -21,30 +21,56 @@
         </div>
         <div class="col">
           <label for="new_target">期限</label><br>
-          <input type="datetime-local" class="form-control" name="target", id="new_target">
+          <input type="datetime-local" class="form-control" name="target", id="new_target" value="{{now}}">
         </div>
       </div>
     <input type="submit" value="タスクを追加" class="btn btn-primary" style="margin-top: 5px;">
     </form>
   </div>
-{% for task in latest_task_list %}
-<div class="alert alert-info" role="alert">
-  <div style="margin-bottom: 5px;">
-    <input type="checkbox" name="completed" value='True' style="float: left; margin: 6px 4px;">
-    <p id="task_{{ task.id }}" style="display: inline;">{{ task.task }}</p>
-    <p class="badge badge-danger" id="target_{{ task.id }}" style="font-size: 15px; margin-left: 5px; display: inline;">期限：{{ task.target|date:"Y-m-j H:i" }}</p>
+  <div class="row">
+    <div class="col-md-8 order-md-1">
+    {% for task in task_list %}
+      <div class="alert alert-info" role="alert">
+        <div style="margin-bottom: 5px;">
+          <form action="{% url 'completed' task.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="completed" value='True'>
+            <input type="submit" value="" style="height: 5px; padding: 4px; float: left; margin: 6px;">
+          </form>
+          <p id="task_{{ task.id }}" style="display: inline;">{{ task.task }}</p>
+          <p class="badge badge-danger" id="target_{{ task.id }}" value="{{ task.target|date:"Y-m-d H:i" }}"
+           style="font-size: 15px; margin-left: 5px; display: inline;">期限：{{ task.target|date:"Y-m-j H:i" }}</p>
+        </div>
+        <form action="{% url 'edit' task.pk %}" method="POST">
+          {% csrf_token %}
+          <div id="form_box_{{task.id}}" class="row"></div>
+        </form>
+        <a type="button" class="btn btn-primary" id="{{task.id}}" onclick="editFunction(this)" style="color: white;">編集</a>
+        <form action="{% url 'delete' task.pk %}" method="POST" class="btn">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success" aria-disabled="true" onclick='return confirm("本当に削除しますか？");'>削除</button>
+        </form>
+      </div>
+    {% endfor %}
+    </div> 
+    <div class="col-md-4 order-md-2 mb-4">
+      <p style="text-align: center;"><strong class="text-muted">完了済みのタスク</strong></p>
+      {% for comp_task in completed_task %}
+        <div class="alert alert-secondary" role="alert">
+          <div style="margin-bottom: 5px;">
+            <form action="{% url 'completed' comp_task.pk %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="completed" value='False'>
+              <input type="submit" value="" style="height: 5px; padding: 4px; float: left; margin: 6px;">
+            </form>
+            <p id="task_{{ task.id }}" style="display: inline;">{{ comp_task.task }}</p>
+            <p class="badge badge-light" id="target_{{ task.id }}" style="font-size: 15px; margin-left: 5px; display: inline;">完了：{{ comp_task.target|date:"Y-m-j H:i" }}</p>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
   </div>
-  <form action="{% url 'edit' task.pk %}" method="POST">
-    {% csrf_token %}
-    <div id="form_box_{{task.id}}" class="row"></div>
-  </form>
-  <a type="button" class="btn btn-primary" id="{{task.id}}" onclick="editFunction(this)" style="color: white;">編集</a>
-  <form action="{% url 'delete' task.pk %}" method="POST" class="btn">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-success" aria-disabled="true" onclick='return confirm("本当に削除しますか？");'>削除</button>
-  </form>
-</div>
-{% endfor %}
 </div>
 {% endblock content %}
 

@@ -1,5 +1,7 @@
 function editFunction(ele) {
   var task_id = ele.id;
+  const target = document.getElementById("target_" + task_id).getAttribute('value')
+  const time = target.slice(0,10)+'T'+target.slice(11,16)
   const div = document.getElementById("form_box_" + task_id);
   const task_name = document.getElementById("task_" + task_id).innerText;
   if (!div.hasChildNodes()){
@@ -14,6 +16,7 @@ function editFunction(ele) {
     const input_target = document.createElement("input");
     const div3 = document.createElement("div");
     input_target.setAttribute("type", "datetime-local");
+    input_target.setAttribute("value", time);
     input_target.setAttribute("name", "target");
     input_target.setAttribute("class", "form-control");
     input_target.setAttribute("style", "width: 70%;");
