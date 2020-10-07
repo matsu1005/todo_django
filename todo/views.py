@@ -9,9 +9,10 @@ import datetime
 
 def render_index(request):
   now = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+  utc_time = timezone.now()
   task_list = Task.objects.filter(completed='False').order_by('-target').reverse()
   completed_task = Task.objects.filter(completed='True').order_by('-target')
-  context = {'task_list': task_list, 'completed_task': completed_task, 'now': now}
+  context = {'task_list': task_list, 'completed_task': completed_task, 'now': now, 'utc_time': utc_time}
   return render(request, 'todo/index.html', context)
 
 
