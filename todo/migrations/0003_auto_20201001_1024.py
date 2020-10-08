@@ -7,9 +7,9 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('todo', '0002_auto_20201001_1004'),
-    ]
+    # dependencies = [
+    #     ('todo', '0002_auto_20201001_1004'),
+    # ]
 
     operations = [
         migrations.CreateModel(
