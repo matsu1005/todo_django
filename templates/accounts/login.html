@@ -1,0 +1,34 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+<div class="form-signin" style="width: 350px; margin: 100px auto;">
+  <div class="text-center mb-4">
+    <div class="h3 mb-3 font-weight-normal">
+      <b>todoアプリ</b>
+    </div>
+    <div class="login-box-body">
+      <p class="mb-4"><b>ログイン画面</b></p>
+      <form action="" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            {{ field }}
+          </div>
+        {% endfor %}
+        <div class="row">
+          {% for error in form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              <p>{{ error }}</p>
+            </div>
+          {% endfor %}
+          <div class="col-xs-4" style="margin: auto;">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">ログイン</button>
+          </div>
+        </div>
+      </form>
+      <p style="margin: 10px 0  0;">会員登録はこちら</p>
+      <a href="/signup">signup</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}
