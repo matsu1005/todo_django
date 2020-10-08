@@ -28,11 +28,6 @@ except ImportError:
     pass
 
 
-if not DEBUG:
-    import django_heroku
-    django_heroku.settings(locals())
-
-
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 # Application definition
@@ -145,3 +140,8 @@ STATICFILES_DIRS = (
 LOGIN_URL = '/login' 
 LOGIN_REDIRECT_URL = '/todo'
 LOGOUT_REDIRECT_URL='/login'
+
+
+if not DEBUG:
+    import django_heroku
+    django_heroku.settings(locals())
