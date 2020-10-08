@@ -1,21 +1,19 @@
 {% extends 'todo/base.html' %}
 
+
 {% block header %}
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#" style="font-size: 30px; margin: auto;">Todoアプリ</a>
-    </nav>
-  </div>
-</div>
+  {% include "todo/header.html" %}
 {% endblock header %}
 {% block content %}
 <div class='container'>
   <div class="alert alert-info" style="width: 70%; margin: 20px auto; text-align: center;">
-    <form action="{% url 'new'  %}" method="POST">
+    <form action="{% url 'todo:new'  %}" method="POST">
       {% csrf_token %}
       <div class="row">
         <div class="col">
+          {% for error in form.non_field_errors %}
+            <p style="font-size: 10px; margin: 0; color: red; position: absolute; top: -10px; left: 150px;">{{ error }}</p>
+          {% endfor %}
           <label for="new_task">タスク内容</label><br>
           <input type="text" name="task" class="form-control" id="new_task" value='' placeholder="取り組むタスクを入力">
         </div>
@@ -24,7 +22,7 @@
           <input type="datetime-local" class="form-control" name="target", id="new_target" value="{{now}}">
         </div>
       </div>
-    <input type="submit" value="タスクを追加" class="btn btn-primary" style="margin-top: 5px;">
+    <input type="submit" value="タスクを追加" class="btn btn-primary" style="margin-top: 20px;">
     </form>
   </div>
   <div class="row">
@@ -37,7 +35,7 @@
         <p style="color: red;"><strong>期限が切れています！！</strong></p>
     {% endif %}
         <div style="margin-bottom: 5px;">
-          <form action="{% url 'completed' task.pk %}" method="POST">
+          <form action="{% url 'todo:completed' task.pk %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="completed" value='True'>
             <input type="submit" value="" style="height: 5px; padding: 4px; float: left; margin: 6px;">
@@ -46,12 +44,12 @@
           <p class="badge badge-danger" id="target_{{ task.id }}" value="{{ task.target|date:"Y-m-d H:i" }}"
            style="font-size: 15px; margin-left: 5px; display: inline;">期限：{{ task.target|date:"Y-m-j H:i" }}</p>
         </div>
-        <form action="{% url 'edit' task.pk %}" method="POST">
+        <form action="{% url 'todo:edit' task.pk %}" method="POST">
           {% csrf_token %}
           <div id="form_box_{{task.id}}" class="row"></div>
         </form>
         <a type="button" class="btn btn-primary" id="{{task.id}}" onclick="editFunction(this)" style="color: white;">編集</a>
-        <form action="{% url 'delete' task.pk %}" method="POST" class="btn">
+        <form action="{% url 'todo:delete' task.pk %}" method="POST" class="btn">
           {% csrf_token %}
           <button type="submit" class="btn btn-success" aria-disabled="true" onclick='return confirm("本当に削除しますか？");'>削除</button>
         </form>
@@ -63,7 +61,7 @@
       {% for comp_task in completed_task %}
         <div class="alert alert-secondary" role="alert">
           <div style="margin-bottom: 5px;">
-            <form action="{% url 'completed' comp_task.pk %}" method="POST">
+            <form action="{% url 'todo:completed' comp_task.pk %}" method="POST">
               {% csrf_token %}
               <input type="hidden" name="completed" value='False'>
               <input type="submit" value="" style="height: 5px; padding: 4px; float: left; margin: 6px;">
@@ -77,5 +75,7 @@
     </div>
   </div>
 </div>
+
+
 {% endblock content %}
 
