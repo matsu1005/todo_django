@@ -19,14 +19,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
 try:
     from .local_settings import *
 except ImportError:
     pass
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
 
 if not DEBUG:
@@ -35,7 +34,6 @@ if not DEBUG:
 
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
-ALLOWED_HOSTS = ['*']
 
 # Application definition
 
