@@ -29,6 +29,7 @@ except ImportError:
 
 
 ALLOWED_HOSTS = ['127.0.0.1', 'todo-app-201008.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
