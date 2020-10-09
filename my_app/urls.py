@@ -20,4 +20,4 @@ urlpatterns = [
     path('todo/', include('todo.urls')),
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
