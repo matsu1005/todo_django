@@ -144,7 +144,7 @@ except ImportError:
 
 if not DEBUG:
     import django_heroku
-    django_heroku.settings(locals())
+    django_heroku.settings(config=locals(), staticfiles=False,logging=False)
 
 
 import dj_database_url
