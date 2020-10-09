@@ -22,11 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
-
 
 # ALLOWED_HOSTS = ['127.0.0.1', 'todo-app-201008.herokuapp.com']
 ALLOWED_HOSTS = ['*']
@@ -92,9 +87,6 @@ DATABASES = {
 }
 
 
-import dj_database_url
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -144,7 +136,17 @@ LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/todo'
 LOGOUT_REDIRECT_URL='/login'
 
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
 
 if not DEBUG:
     import django_heroku
     django_heroku.settings(locals())
+
+
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)

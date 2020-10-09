@@ -131,3 +131,4 @@ dmypy.json
 
 local_settings.py
 get_random_secret_key.py
+.DS_Store
